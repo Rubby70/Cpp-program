@@ -2,19 +2,19 @@
 #include <fstream>
 using namespace std;
 
-
 int main(void){
 
-    ofstream outfile("my.out", ios::out);
-    if(!outfile){
+    ifstream infile("my.out", ios::in);
+    if(!infile){
         cout << "Cannot open my.out" << endl;
         return 1;
     }
 
-    int i = 10;
-    float f = 1.23;
-    outfile << "i:" << i << endl;
-    outfile << "f:" << f << endl;
+    int x;
+    while(!infile.eof()){
+        infile >> x;
+        cout << x << endl;
+    }
     return 0;
 
 }
