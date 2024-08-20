@@ -1,20 +1,11 @@
-#include <stdio.h>
+#include <iostream>
+using namespace std;
 
 
 int main(void){
 
-    int x = 10;
-    int y = 20;
-    {
-        printf("x = %d, y = %d\n", x, y);
-        {
-            int y = 40;
-            x ++;
-            y ++;
-            printf("x = %d, y = %d\n", x, y);
-        }
-        printf("x = %d, y = %d\n", x ,y);
-    }
+    cout << "Hello World" << "\n";
+    cerr << " Hello world2 " << "\n";
     return 0;
 
 }
