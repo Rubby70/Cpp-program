@@ -60,7 +60,6 @@ void inorder_iterator(treeNode* Node){
         S.pop();
         cout << currentNode->data << " ";
         currentNode = currentNode->rightchild;
-
     }
 
 }
