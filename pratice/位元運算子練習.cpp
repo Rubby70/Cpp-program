@@ -98,7 +98,7 @@ void Q6(){
 }
 void Q7(){//X
 
-    int n = 54;
+    int n = 32;
     bitset<32> b(n);
     cout << b << " -> " << n << "\n";
 
@@ -136,7 +136,7 @@ int main(void){
     // Q3(n);
     // Q4();
     // Q5(n);
-    // Q6();
+    Q6();
     // Q7();
     return 0;
 
