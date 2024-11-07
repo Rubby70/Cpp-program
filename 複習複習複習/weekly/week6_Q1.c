@@ -23,7 +23,6 @@ char* AddSize(char* str){
 
     int length = CountLength(str);
     int new_length = length + 10;
-    printf("擴大容量%d -> %d\n", length, new_length);
     char* temp = (char*)malloc(sizeof(char) * new_length);
     if(length != 0){
         strcpy(temp, str);
@@ -32,37 +31,74 @@ char* AddSize(char* str){
     return temp;
 
 }
-void scan(char* str){
+void scan(char** ptr2str){
 
-    int length = CountLength(str);
+    int length = CountLength(*ptr2str);
     if(length == 0)
-        AddSize(str);
+        *ptr2str = AddSize(*ptr2str);
     int current_length = 1;
-    char temp;
     int i = 0;
     while(1){
-        scanf("%c", &temp);
-        str[i] = temp;
-        if(temp == '\n'){
-            str[i] = '\0';
+        scanf("%c", &(*ptr2str)[i]);
+        if((*ptr2str)[i] == '\n'){
+            (*ptr2str)[i] = '\0';
             break;
         }
         current_length ++;
         i ++;
-        // if(current_length == length)
-        //     AddSize(str);
+        if(current_length == length)
+            *ptr2str = AddSize(*ptr2str);
     }
 
 }
-int strstrstr(){}
+int strstrstr(char* str1, char* str2){
+
+    int position_str1 = 0;
+    int position_str2 = 0;
+    int length_str1 = CountLength(str1);
+    int length_str2 = CountLength(str2);
+    int start = -1;
+    int end = -1;
+    while(1){
+        if(position_str2 == length_str2){
+            end = position_str1 - 1;
+            printf("Location: %d - %d\n", start, end);
+            return 1;
+        }
+        if(position_str1 == length_str1)
+            break;
+        if((start == -1) && (str1[position_str1] == str2[position_str2])){
+            start = position_str1;
+            printf("發現第一個字母相同的位置: %d\n", start);
+        }
+        if(str1[position_str1] != str2[position_str2]){
+            if(start != -1)
+                printf("重新開始檢查\n");
+            position_str1 ++;
+            position_str2 = 0;
+            start = -1;
+            continue;
+        }
+        position_str1 ++;
+        position_str2 ++;
+    }
+    printf("Not found\n");
+    return -1;
+
+}
 
 int main(void){
 
+    printf("input 1: ");
     char* str1 = NULL;
-    scan(str1);
-    int length = CountLength(str1);
+    scan(&str1);
+    printf("input 2: ");
+    char* str2 = NULL;
+    scan(&str2);
     printf("str1: %s\n", str1);
-    printf("str1的長度: %d\n", length);
+    printf("str2: %s\n", str2);
+
+    strstrstr(str1, str2);
     return 0;
 
 }

@@ -20,7 +20,12 @@ int main(void){
 
     return 0;
 }
-
+error
+Hello
+8 bytes
+6 bytes
+5
+5
 
 // 第二題, strcmp
 #include "stdio.h"
@@ -37,6 +42,17 @@ int main(void) {
     printf("string same ? %d\n", str1 == str2);
     return 0;
 }
+
+int i = 0;
+while(str1[i] != '\0'){
+    if(str1[i] == str2[i]){
+        i ++;
+    }
+    else{
+        return 0;
+    }
+}
+return 1;
 
 // 第三題, reverse string
 #include "string.h"
