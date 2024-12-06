@@ -41,26 +41,35 @@ int main(void) {
     char str2[] = "abcd";
     printf("string same ? %d\n", str1 == str2);
     return 0;
-}
 
-int i = 0;
-while(str1[i] != '\0'){
-    if(str1[i] == str2[i]){
-        i ++;
+}
+A:
+bool fcn(char *str1, char *str2) { 
+
+    int i;
+    for(i = 0; str1[i] != '\0'; i ++){
+        if(str1[i] != str2[i]){
+            return 0;
+        }
     }
-    else{
+    if(str2[i] != '\0'){
         return 0;
     }
+    return 1;
+
 }
-return 1;
+0
 
 // 第三題, reverse string
 #include "string.h"
 #include "stdio.h"
 
 
-#define swap(a, b)                                                             \
-// 要你自己補齊XD
+#define swap(a, b) do{ \
+    char temp = (a); \
+    (a) = (b); \
+    (b) = temp; \
+}while(0)
 
 char * reverse_string(char *, int length);
 
@@ -72,6 +81,11 @@ int main(void) {
 }
 
 char *reverse_string(char *str, int length) {
+
+    for(int i = 0; i < length / 2; i ++){
+        swap(str[i], str[length - 1 - i]);
+    }
+    return str;
 
 }
 
@@ -95,4 +109,6 @@ int main(void){
     cout << (str3 == str4) << endl;
     cout << (str5 == str6) << endl;
 }
-
+0
+0
+1
