@@ -236,47 +236,30 @@ void DFS(char** maze, int rows, int cols, int start_x, int start_y, int dest_x, 
     S.Push(position(start_x, start_y));
     int dx[4] = {1, 0, -1, 0};
     int dy[4] = {0, 1, 0, -1};
-    int newX, newY;
+    int nowX, nowY;
     int i;
-
     while(1){
         //隨機往上下左右移動一格
         for(i = 0; i < 4; i ++){
-            newX = S.Top().PositionX() + dx[i];
-            newY = S.Top().PositionY() + dy[i];
+            nowX = S.Top().PositionX() + dx[i];
+            nowY = S.Top().PositionY() + dy[i];
 
-            //printf("第%d步 (%d, %d) = '%c', ", cnt, newX, newY, maze[newX][newY]);
-            switch(i){
-                case 0:
-                    //printf("往下走一步, ");
-                    break;
-                case 1:
-                    //printf("往右走一步, ");
-                    break;
-                case 2:
-                    //printf("往上走一步, ");
-                    break;
-                case 3:
-                    //printf("往左走一步, ");
-                    break;
-            }
-
-            if((newX < 1) || (newX >= cols - 1) || (newY < 1) || (newY >= rows - 1)){
+            if((nowX < 1) || (nowX >= cols - 1) || (nowY < 1) || (nowY >= rows - 1)){
                 //printf("出界.\n");
                 continue;
             }
 
-            if(visited[newX][newY] == 1){
+            if(visited[nowX][nowY] == 1){
                 //printf("走過了.\n");
                 continue;
             }
 
-            if(maze[newX][newY] == '#'){
+            if(maze[nowX][nowY] == '#'){
                 //printf("撞到牆.\n");
                 continue;
             }
 
-            maze[newX][newY] = 'O';
+            maze[nowX][nowY] = 'O';
             printMaze(maze, rows, cols);
             printf("\n");
             break;
@@ -291,19 +274,19 @@ void DFS(char** maze, int rows, int cols, int start_x, int start_y, int dest_x, 
             S.Pop();
             cnt --;
             //printf("無路可走, 退一步.\n");
-            newX = S.Top().PositionX();
-            newY = S.Top().PositionY();
-            if((newX >= 1) && (newX < cols - 1) && (newY >= 1) && (newY < rows - 1)){
-                maze[newX][newY] = 'X';
+            nowX = S.Top().PositionX();
+            nowY = S.Top().PositionY();
+            if((nowX >= 1) && (nowX < cols - 1) && (nowY >= 1) && (nowY < rows - 1)){
+                maze[nowX][nowY] = 'X';
             }
             printMaze(maze, rows, cols);
             printf("\n");
             continue;
         }
 
-        S.Push(position(newX, newY));
+        S.Push(position(nowX, nowY));
         cnt ++;
-        visited[newX][newY] = 1;
+        visited[nowX][nowY] = 1;
 
         if((S.Top().PositionX() == dest_x) && (S.Top().PositionY() == dest_y)){
             printf("走到終點了.\n");
@@ -419,7 +402,6 @@ void generate_maze(char** maze, int height, int width) {
     }
 
 }
-
 
 int main() {
 
