@@ -239,73 +239,67 @@ void DFS(char** maze, int rows, int cols, int start_x, int start_y, int dest_x, 
     int nowX, nowY;
     int i;
     while(1){
-        //隨機往上下左右移動一格
+        //從上一輪的位置往上下左右移動一格
         for(i = 0; i < 4; i ++){
             nowX = S.Top().PositionX() + dx[i];
             nowY = S.Top().PositionY() + dy[i];
 
-            if((nowX < 1) || (nowX >= cols - 1) || (nowY < 1) || (nowY >= rows - 1)){
-                //printf("出界.\n");
+            //判定是否超出邊界
+            if((nowX < 1) || (nowX >= cols - 1) || (nowY < 1) || (nowY >= rows - 1))
                 continue;
-            }
 
-            if(visited[nowX][nowY] == 1){
-                //printf("走過了.\n");
+            //判定是否已經走過
+            if(visited[nowX][nowY] == 1)
                 continue;
-            }
 
-            if(maze[nowX][nowY] == '#'){
-                //printf("撞到牆.\n");
+            //判定是否是牆
+            if(maze[nowX][nowY] == '#')
                 continue;
-            }
 
-            maze[nowX][nowY] = 'O';
-            printMaze(maze, rows, cols);
-            printf("\n");
+            //不符合上述三個條件時才前進一步
+            // maze[nowX][nowY] = 'O'; //紀錄目前的位置
+            // printMaze(maze, rows, cols);
+            // printf("\n");
             break;
         }
 
-        //若上下左右都沒有可以移動的格子時，退回上一格
+        //若上下左右都沒有可以移動的格子時，退回上一步
         if(i == 4){
             if((S.Top().PositionX() == start_x) && (S.Top().PositionY() == start_y)){
                 printf("無法走到終點.\n");
                 return ;
             }
-            S.Pop();
-            cnt --;
-            //printf("無路可走, 退一步.\n");
+            
+            //標記為死路
             nowX = S.Top().PositionX();
             nowY = S.Top().PositionY();
             if((nowX >= 1) && (nowX < cols - 1) && (nowY >= 1) && (nowY < rows - 1)){
                 maze[nowX][nowY] = 'X';
             }
+
+            S.Pop();
+            cnt --; //已經走過的步數減一
+
+            printf("倒退一步\n");
             printMaze(maze, rows, cols);
             printf("\n");
             continue;
         }
 
+        //若不符合上一個if的條件時，代表這一步可以走
+        maze[S.Top().PositionX()][S.Top().PositionY()] = 'O';
         S.Push(position(nowX, nowY));
         cnt ++;
         visited[nowX][nowY] = 1;
+        maze[nowX][nowY] = 'N';
+        printMaze(maze, rows, cols);
+        printf("\n");
 
         if((S.Top().PositionX() == dest_x) && (S.Top().PositionY() == dest_y)){
             printf("走到終點了.\n");
             break;
         }
 
-    }
-
-    while(0){
-        printf("到達終點.\n");
-        printf("start: (%d, %d)\n", start_x, start_y);
-        printf("dest: (%d, %d)\n", dest_x, dest_y);
-        printf("Stack:  (%d, %d)\n", S.Top().PositionX(), S.Top().PositionY());
-        for(int i = 0; i < rows; i ++){
-            for(int j = 0; j < cols; j ++){
-                printf("%d", visited[i][j]);
-            }
-            printf("\n");
-        }
     }
 
 }
