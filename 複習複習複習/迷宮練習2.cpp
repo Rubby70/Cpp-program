@@ -1,27 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//宣告
+// 定義方向：上、下、左、右
 int dx[4] = {-1, 1, 0, 0};
 int dy[4] = {0, 0, -1, 1};
-bool is_valid(int x, int y, int height, int width);
-void printMaze(char **maze, int rows, int cols);
-int count_paths(char **maze, int height, int width, int sx, int sy, int ex, int ey);
-void generate_maze(char** maze, int height, int width);
-void DFS(char** maze, int rows, int cols, int start_x, int start_y, int dest_x, int dest_y);
 
-//定義
+// 檢查是否在迷宮範圍內
 bool is_valid(int x, int y, int height, int width) {
     return x >= 0 && x < height && y >= 0 && y < width;
 }
-void printMaze(char **maze, int rows, int cols) {
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            printf("%c", maze[i][j]);
-        }
-        printf("\n");
-    }
-}
+
+// 廣度優先搜索，計算所有路徑
 int count_paths(char **maze, int height, int width, int sx, int sy, int ex, int ey) {
     int path_count = 0;
     
@@ -29,8 +18,8 @@ int count_paths(char **maze, int height, int width, int sx, int sy, int ex, int 
     bool **visited = (bool**)malloc(height * sizeof(bool*));
     int **path_length = (int**)malloc(height * sizeof(int*));
     for (int i = 0; i < height; i++) {
-        visited[i] = (bool*)calloc(width, sizeof(bool));
-        path_length[i] = (int*)calloc(width, sizeof(int));
+        visited[i] = (bool*)malloc(width * sizeof(bool));
+        path_length[i] = (int*)malloc(width * sizeof(int));
     }
     
     // 創建隊列
@@ -98,8 +87,12 @@ int count_paths(char **maze, int height, int width, int sx, int sy, int ex, int 
     
     return path_count;
 }
-void generate_maze(char** maze, int height, int width){
 
+// 生成迷宮
+void generate_maze(char** &maze, int height, int width, int &path_count, int &sx, int &sy, int &ex, int &ey) {
+    // 分配記憶體
+   
+    
     // 初始化迷宮為牆壁，確保最外圍是牆壁
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
@@ -108,8 +101,8 @@ void generate_maze(char** maze, int height, int width){
     }
     
     // 隨機生成通道（跳過最外圍）
-    for (int i = 2; i < height - 1; i += 2) {
-        for (int j = 2; j < width - 1; j += 2) {
+    for (int i = 2; i < height - 2; i += 2) {
+        for (int j = 2; j < width - 2; j += 2) {
             maze[i][j] = ' ';
             
             // 隨機打通相鄰的牆壁，增加多樣性
@@ -129,11 +122,10 @@ void generate_maze(char** maze, int height, int width){
     }
     
     // 選擇隨機起點和終點（排除最外圍）
-    int sx, sy, ex, ey;
-    int max_attempts = 100;
-    int path_count = 0;
     
-    while (path_count < 2 && max_attempts > 0) {
+    int max_attempts = 100;
+    
+    while (path_count < 1 && max_attempts > 0) {
         // 選擇起點和終點
         sx = rand() % (height - 2) + 1;
         sy = rand() % (width - 2) + 1;
@@ -141,10 +133,10 @@ void generate_maze(char** maze, int height, int width){
         ey = rand() % (width - 2) + 1;
         
         // 確保起點和終點不在牆上，且不在同一位置
-        if (maze[sx][sy] != '#' && maze[ex][ey] != '#' && 
+        if (maze[sy][sx] != '#' && maze[ey][ex] != '#' && 
             (sx != ex || sy != ey)) {
             
-            //檢查路徑數量
+            // 檢查路徑數量
             path_count = count_paths(maze, height, width, sx, sy, ex, ey);
         }
         
@@ -152,48 +144,25 @@ void generate_maze(char** maze, int height, int width){
     }
     
     // 如果無法找到多條路徑
-    while(1){
-        if (path_count < 2) {
-            printf("無法生成具有路徑的迷宮，請重新嘗試。\n");
-            
-            // 釋放記憶體
-            for (int i = 0; i < height; i++) {
-                free(maze[i]);
-            }
-            free(maze);
-            
-            return;
-        }
-    }
-    
-    // 標記起點和終點
-    maze[sx][sy] = 'S';
-    maze[ex][ey] = 'E';
-    
-    // 打印迷宮
-    int rows = height;
-    int cols = width;
-    printf("\n完成的迷宮地圖, rows = %d, cols = %d, S(%d, %d), E(%d, %d)\n", rows, cols, sx, sy, ex, ey);
-    printMaze(maze, rows, cols);
-    printf("\n");
-
-    // printf("DFS:\n");
-    // DFS(maze, rows, cols, sx, sy, ex, ey);
-
-    // 列印路徑數量
-    while(1){
-        printf("\n從起點到終點的路徑數量：%d\n", path_count);
+    if (path_count <= 0) {
+        printf("無法生成具有路徑的迷宮，請重新嘗試。\n");
         
         // 釋放記憶體
         for (int i = 0; i < height; i++) {
             free(maze[i]);
         }
         free(maze);
+        
+        return;
     }
-
+    
+    // 標記起點和終點
+    maze[sy][sx] = 'S';
+    maze[ey][ex] = 'E';
+    
 }
 
-//作答區
+//小白作答區
 class position{
 
     private:
@@ -307,93 +276,87 @@ class Stack{
         }
 
 };
-void DFS(char** maze, int rows, int cols, int start_x, int start_y, int dest_x, int dest_y){
+void PrintMaze(char** maze, int height, int width){
 
-    int max_step_count = rows * cols;
-    
-    //記錄走過的路徑
-    int visited[rows][cols];
-    for(int i = 0; i < rows; i ++){
-        for(int j = 0; j < cols; j ++){
-            visited[i][j] = 0;
-        }
+    printf(" ");
+    for(int i = 0; i < height; i ++){
+        printf("%d", i);
     }
-    visited[start_x][start_y] = 1;
+    printf("\n");
 
-    //找路
-    Stack S(max_step_count);
-    S.Push(position(start_x, start_y));
-    int dx[4] = {1, 0, -1, 0};
-    int dy[4] = {0, 1, 0, -1};
-    int nowX, nowY;
-    int i;
-
-    while(1){
-        //從上一輪的位置往上下左右移動一格
-        for(i = 0; i < 4; i ++){
-            nowX = S.Top().PositionX() + dx[i];
-            nowY = S.Top().PositionY() + dy[i];
-
-            //判定是否超出邊界
-            printf("(%d, %d) = %c\n", nowX, nowY, maze[nowX][nowY]);
-            if((nowX < 1) || (nowX >= cols - 1) || (nowY < 1) || (nowY >= rows - 1)){
-                printf("case 1, nowX = %d, cols = %d, nowY = %d, rows = %d\n", nowX, cols, nowY, rows);
-                continue;
-            }
-
-            //判定是否已經走過
-            if(visited[nowX][nowY] == 1){
-                printf("case 2\n");
-                continue;
-            }
-
-            //判定是否是牆
-            if(maze[nowX][nowY] == '#'){
-                printf("case 3\n");
-                continue;
-            }
-
-            break;
+    for (int i = 0; i < height; i++) {
+        printf("%d", i);
+        for (int j = 0; j < width; j++) {
+            printf("%c", maze[i][j]);
         }
-
-        //若上下左右都沒有可以移動的格子時，退回上一步
-        if(i == 4){
-            if((S.Top().PositionX() == start_x) && (S.Top().PositionY() == start_y)){
-                printf("無法走到終點.\n");
-                return ;
-            }
-            
-            //標記為死路
-            nowX = S.Top().PositionX();
-            nowY = S.Top().PositionY();
-            if((nowX >= 1) && (nowX < cols - 1) && (nowY >= 1) && (nowY < rows - 1)){
-                maze[nowX][nowY] = 'X';
-            }
-
-            S.Pop();
-            printf("倒退一步\n");
-            printMaze(maze, rows, cols);
-            printf("\n");
-            continue;
-        }
-
-        //若不符合上一個if的條件時，代表這一步可以走
-        if((S.Top().PositionX() != start_x) && (S.Top().PositionY() != start_y)){
-            maze[S.Top().PositionX()][S.Top().PositionY()] = 'O';
-        }
-
-        S.Push(position(nowX, nowY));
-        visited[nowX][nowY] = 1;
-        maze[nowX][nowY] = 'N';
-        printMaze(maze, rows, cols);
         printf("\n");
-
-        if((S.Top().PositionX() == dest_x) && (S.Top().PositionY() == dest_y)){
-            printf("走到終點了.\n");
-            break;
-        }
-
     }
+    printf("\n");
+
+}
+void DFS(char** maze, int height, int width, int sx, int sy, int ex, int ey){
+
+    bool visited[height][width];
+    for(int i = 0; i < height; i ++){
+        for(int j = 0; j < width; j ++){
+            visited[i][j] = false;
+        }
+    }
+
+    // for(int i = 0; i < height; i ++){
+    //     for(int j = 0; j < width; j ++){
+    //         printf("%d", visited[i][j]);
+    //     }
+    //     printf("\n");
+    // }
+    // printf("\n");
+    
+    int cnt_step = 0;
+    Stack S(1000);
+    position start(sx, sy);
+    S.Push(start);
+
+    int nowX;
+    int nowY;
+    while(0){
+        if((S.Top().PositionX() != ex) || (S.Top().PositionY() != ey)){
+            if((cnt_step > 0) && (S.top == 0)){
+                printf("沒有路通向終點.\n");
+            }
+
+            if(S.top != 0){
+                maze[S.Top().PositionY()][S.Top().PositionX()] = '*';
+            }
+
+            for(int i = 0; i < 4; i ++){
+                nowX = S.Top().PositionX() + dx[i];
+                nowY = S.Top().PositionY() + dy[i];
+
+                if(!is_valid(nowX, nowY, height, width)){
+                    continue;
+                }
+
+                if(visited[nowX][nowY] == 1){
+                    continue;
+                }
+
+                if(maze[nowY][nowX] == '#'){
+                    continue;
+                }
+            }
+
+            cnt_step ++;
+            maze[nowY][nowX] = 'N';
+            S.Push(position(nowX, nowY));
+        }
+    }
+
+    nowX = S.Top().PositionX() + 1;
+    nowY = S.Top().PositionY() + 0;
+    maze[nowY][nowX] = 'N';
+    printf("start (%d, %d)\n", S.Top().PositionY(), S.Top().PositionX());
+    printf("new (%d, %d)\n", nowY, nowX);
+    PrintMaze(maze, height, width);
 
 }
 
@@ -401,19 +364,39 @@ int main() {
 
     srand(time(NULL));
     int height, width;
-    printf("請輸入迷宮的高度和寬度（最小為4x4）：");
+    printf("請輸入迷宮的高度和寬度(最小為4x4): ");
     scanf("%d %d", &height, &width);
     
     // 確保高度和寬度至少為4
     if (height < 4) height = 4;
     if (width < 4) width = 4;
-
-    char** maze = (char**)malloc(height * sizeof(char*));
+    
+    char **maze = (char**)malloc(height * sizeof(char*));
     for (int i = 0; i < height; i++) {
         maze[i] = (char*)malloc(width * sizeof(char));
     }
+    int sx = -1;
+    int sy = -1;
+    int ex = -1;
+    int ey = -1;
+    int path_count = 0;
+    generate_maze(maze, height, width, path_count, sx, sy, ex, ey);
     
-    generate_maze(maze, height, width);
-    return 0;
+    if(path_count == 0){
+        return 0;
+    }
 
+    // 打印迷宮
+    printf("start (%d, %d)\nend (%d, %d)\n", sy, sx, ey, ex);
+    printf("從起點到終點的路徑數量：%d\n", path_count);
+    PrintMaze(maze, height, width);
+
+    DFS(maze, height, width, sx, sy, ex, ey);
+    
+    // 釋放記憶體
+    for (int i = 0; i < height; i++) {
+        free(maze[i]);
+    }
+    free(maze);
+    return 0;
 }
