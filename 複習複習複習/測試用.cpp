@@ -2,29 +2,28 @@
 using namespace std;
 
 
-class testA{
+double& Compare(double& a, double& b){
 
-    public:
-        int a;
-        char b;
-        char c;
+    return a <= b ? a : b;
 
-};
-class testB{
-
-    public:
-        char bb;
-        int aa;
-        char cc;
-
-};
+}
 
 int main(void){
 
-    testA A;
-    testB B;
-    cout << "sizeof(A): " << sizeof(A) << "\n";
-    cout << "sizeof(B): " << sizeof(B) << "\n";
+    double A = 1.1;
+    double B = 2.2;
+
+    double C = Compare(A, B);
+    cout << "C = " << C << "\n";
+
+    Compare(A, B) += 2;
+    cout << "A = " << A << ", B = " << B << "\n";
+
+    Compare(A, B) += 2;
+    cout << "A = " << A << ", B = " << B << "\n";
+
+    Compare(A, B) = 10;
+    cout << "A = " << A << ", B = " << B << "\n";
     return 0;
 
 }
