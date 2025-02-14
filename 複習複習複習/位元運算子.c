@@ -1,184 +1,99 @@
-#include "stdio.h"
-#include "stdlib.h"
-#include "stdbool.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-void BinaryPrint(int input){
+void BinaryPrint(int target){
 
+    printf("%3d, ", target);
+    int temp;
     for(int i = 16; i >= 0; i --){
-        int temp = (input >> i) & 1;
+        temp = (target >> i) & 1;
         printf("%d", temp);
     }
-
-}
-void ceiling(int target){ 
-
-    printf("\nceiling.\n");
-    printf("input : ");
-    BinaryPrint(target);
-    printf("\n");
-
-    int copy = target;
-    copy |= copy >> 1;
-    copy |= copy >> 2;
-    copy |= copy >> 4;
-    copy |= copy >> 8;
-    copy |= copy >> 16;
-    copy += 1;
-    
-    printf("output: ");
-    BinaryPrint(copy);
     printf("\n");
 
 }
-void flooring(int target){
 
-    printf("\nflooring.\n");
-    printf("input : ");
+void Ceiling(int target){
+
+
+
+    printf("ceiling:%5s", "");
     BinaryPrint(target);
-    printf("\n");
-
-    int copy = target - 1;
-    copy |= copy >> 1;
-    copy |= copy >> 2;
-    copy |= copy >> 4;
-    copy |= copy >> 8;
-    copy |= copy >> 16;
-    copy += 1;
-    copy = copy >> 1;
-    
-    printf("output: ");
-    BinaryPrint(copy);
-    printf("\n");
 
 }
-void setbit(int target, int whichBit){
-    
-    printf("\nsetbit. whilchBit: %d\n", whichBit);
-    printf("input : ");
-    BinaryPrint(target);
-    printf("\n");
+void Flooring(int target){
 
-    int copy = target;
-    int mask = 1 << whichBit;
-    copy |= mask;
-    
-    printf("output: ");
-    BinaryPrint(copy);
-    printf("\n");
+
+
+    printf("Flooring:%4s", "");
+    BinaryPrint(target);
 
 }
-void clearbit(int target, int whichBit){
+void SetBit(int target, int position){
 
-    printf("\nclearbit. whichBit: %d\n", whichBit);
-    printf("input : ");
+    int mask = 1 << position;
+
+    printf("SetBit(%d):%3s", position, "");
     BinaryPrint(target);
-    printf("\n");
-
-    int copy = target;
-    int mask = 1 << whichBit;
-    copy &= (~mask);
-    
-    printf("output: ");
-    BinaryPrint(copy);
-    printf("\n");
 
 }
-void togglebit(int target, int whichBit){
+void ClearBit(int target, int position){
 
-    printf("\ntogglebit. whichBit: %d\n", whichBit);
-    printf("input : ");
+    int mask = 1 << position;
+
+    printf("ClearBit(%d):%1s", position, "");
     BinaryPrint(target);
-    printf("\n");
-
-    int copy = target;
-    int mask = 1 << whichBit;
-    copy ^= mask;
-    
-    printf("output: ");
-    BinaryPrint(copy);
-    printf("\n");
 
 }
-void checkBit(int target, int whichBit){
+void ToggleBit(int target, int position){
 
-    printf("\ncheckbit. whichBit: %d\n", whichBit);
-    printf("input : ");
+    int mask = 1 << position;
+
+    printf("ToggleBit(%d):", position);
     BinaryPrint(target);
-    printf("\n");
-
-    int copy = target;
-    int mask = 1 << whichBit;
-    copy &= (mask);
-    
-    if(copy == 0){
-        printf("bit: 0\n");
-    }
-    else{
-        printf("bit: 1\n");
-    }
 
 }
-void highestBit(int target){
+void CheckBit(int target, int position){
 
-    printf("\nhighestbit.\n");
-    printf("input : ");
-    BinaryPrint(target);
-    printf("\n");
+    int mask = 1 << position;
 
-    int copy = target;
-    copy |= copy >> 1;
-    copy |= copy >> 2;
-    copy |= copy >> 4;
-    copy |= copy >> 8;
-    copy |= copy >> 16;
-    copy += 1;
-    copy = copy >> 1;   
-    
-    printf("output: ");
-    BinaryPrint(copy);
-    printf("\n");
+    target = (target >> position) & 1;
+
+    printf("CheckBit(%d):%1s", position, "");
+    printf("%d\n", target);
 
 }
-void check2Pow(int target){
+void HighestBit(int target){
 
-    printf("\ncheck2Pow.\n");
-    printf("input : ");
+
+    printf("HighestBit:%2s", "");
     BinaryPrint(target);
-    printf("\n");
 
-    int copy = target;
-    copy |= copy >> 1;
-    copy |= copy >> 2;
-    copy |= copy >> 4;
-    copy |= copy >> 8;
-    copy |= copy >> 16;
-    copy += 1;
-    copy = copy >> 1;
-    copy -= target;
-    
-    if(copy == 0){
-        printf("是2的次方數\n");
-    }
-    else{
-        printf("不是2的次方數\n");
-    }
+}
+void Check2Pow(int target){
+
+
 
 }
 
 int main(void){
 
-    int target;
-    printf("target (建議小於65536) = ");
-    scanf("%d", &target);
+    int target = 85;
 
-    ceiling(target);
-    flooring(target);
-    setbit(target, 3);
-    clearbit(target, 1);
-    togglebit(target, 1);
-    checkBit(target, 1);
-    highestBit(target);
-    check2Pow(target);
+    printf("target:%6s", "");
+    BinaryPrint(target);
+    Ceiling(target);
+    Flooring(target);
+
+    printf("\ntarget:%6s", "");
+    BinaryPrint(target);
+    SetBit(target, 1);
+    ClearBit(target, 2);
+    ToggleBit(target, 3);
+    CheckBit(target, 4);
+    HighestBit(target);
+    Check2Pow(target);
     return 0;
 
 }

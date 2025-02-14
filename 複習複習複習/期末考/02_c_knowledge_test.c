@@ -351,8 +351,8 @@ int main(void){
 
     return 0;
 }
-a = 7, b = 11
-a = 7, b = 11
+a = 3, b = 3
+a = 3, b = 3
 
 // 第十七題, 下面程式碼會印出甚麼
 #include "stdio.h"
