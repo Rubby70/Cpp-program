@@ -53,11 +53,69 @@ void InsertionSort(int* arr, int length){
     }
 
 }
+int BS(int* arr, int length, int target){
 
-//作答區
-int BS(int* arr, int length, int target){}
-int BS_LeftBound(int* arr, int length, int target){}
-int BS_RightBound(int* arr, int length, int target){}
+    int left = 0;
+    int right = length; //左閉右開
+    while(left < right){
+        int mid = left + (right - mid) / 2;
+        if(target == arr[mid]){
+            return mid;
+        }
+        else if(target > arr[mid]){
+            left = mid + 1;
+        }
+        else if(target < arr[mid]){
+            right = mid;
+        }
+    }
+    return -1;
+
+}
+int BS_LefrBound(int* arr, int length, int target){
+
+    int left = 0;
+    int right = length;
+    while(left < right){
+        int mid = left + (right - left) / 2;
+        if(target == arr[mid]){
+            right = mid;
+        }
+        else if(target > arr[mid]){
+            left = mid + 1;
+        }
+        else if(target < arr[mid]){
+            right = mid;
+        }
+    }
+    if(arr[left] != target){
+        return -1;
+    }
+    return left;
+
+}
+int BS_RightBound(int* arr, int length, int target){
+
+    int left = 0;
+    int right = length;
+    while(left < right){
+        int mid = left + (right - left) / 2;
+        if(target == arr[mid]){
+            left = mid + 1;
+        }
+        else if(target > arr[mid]){
+            left = mid + 1;
+        }
+        else if(target < arr[mid]){
+            right = mid;
+        }
+    }
+    if(arr[left - 1] != target){
+        return -1;
+    }
+    return left - 1;
+
+}
 
 int main(void){
 
@@ -87,7 +145,7 @@ int main(void){
     int target2;
     printf("target = ");
     scanf("%d", &target2);
-    printf("position: %d (BS找左邊界)\n", BS_LeftBound(arr_r, length, target2));
+    printf("position: %d (BS找左邊界)\n", BS_LefrBound(arr_r, length, target2));
     printf("position: %d (BS找右邊界)\n", BS_RightBound(arr_r, length, target2));
     return 0;
 

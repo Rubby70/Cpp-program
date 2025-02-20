@@ -55,9 +55,74 @@ void InsertionSort(int* arr, int length){
 }
 
 //作答區
-int BS(int* arr, int length, int target){}
-int BS_LeftBound(int* arr, int length, int target){}
-int BS_RightBound(int* arr, int length, int target){}
+int BS(int* arr, int length, int target){
+
+    int left = 0;
+    int right = length;
+    int mid;
+    int position = -1;
+
+    while(left < right){
+        mid = left + (right - left) / 2;
+        if(arr[mid] == target){
+            position = mid;
+            break;
+        }
+        else if(arr[mid] > target){
+            right = mid;
+        }
+        else if(arr[mid] < target){
+            left = mid + 1;
+        }
+    }
+
+    return position;
+
+}
+int BS_LeftBound(int* arr, int length, int target){
+
+    int left = 0;
+    int right = length;
+    int mid;
+
+    while(left < right){
+        mid = left + (right - left) / 2;
+        if(arr[mid] == target){
+            right = mid;
+        }
+        else if(arr[mid] > target){
+            right = mid;
+        }
+        else if(arr[mid] < target){
+            left = mid + 1;
+        }
+    }
+    
+    return left;
+
+}
+int BS_RightBound(int* arr, int length, int target){
+
+    int left = 0;
+    int right = length;
+    int mid;
+
+    while(left < right){
+        mid = left + (right - left) / 2;
+        if(arr[mid] == target){
+            left = mid + 1;
+        }
+        else if(arr[mid] > target){
+            right = mid;
+        }
+        else if(arr[mid] < target){
+            left = mid + 1;
+        }
+    }
+    
+    return right - 1;
+
+}
 
 int main(void){
 
@@ -66,7 +131,7 @@ int main(void){
     int max = 100;
     //non repeated random array
     int* arr_nr = RandomArray_nonrepeat(length, max);
-    PrintArray(arr_nr, length);
+    //PrintArray(arr_nr, length);
 
     InsertionSort(arr_nr, length);
     PrintArray(arr_nr, length);
