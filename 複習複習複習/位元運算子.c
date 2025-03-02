@@ -15,7 +15,18 @@ void Check2Pow(int target){}
 int main(void){
 
     int target = 85;
+    printf("target: %3d, ", target);
+    BinaryPrint(target);
 
+    Ceiling(target);
+    Flooring(target);
+    SetBit(target, 0);
+    ClearBit(target, 1);
+    ToggleBit(target, 2);
+    CheckBit(target, 3);
+
+    HighestBit(target);
+    Check2Pow(target);
     return 0;
 
 }
