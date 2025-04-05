@@ -10,7 +10,7 @@ int main(void) {
         fcn(i);
     printf("answer = %d\n", i);
 }
-//33
+11
 
 #include "stdio.h"
 
@@ -28,8 +28,7 @@ int main(void) {
     
     printf("%d %d %d", i, j, temp);
 }
-//10 5 5
-
+10 0 0
 
 // 第二題, malloc是甚麼, 他能做些甚麼,要注意甚麼,還有回答下面那個程式碼會印出甚麼
 #include<stdio.h>
@@ -44,18 +43,15 @@ int main()
         puts("Got a valid pointer");
     }
 }
-Q1:malloc是C語言的內建函數
+malloc是user用來宣告一塊記憶體位置的函式
+他能定義出一塊記憶體位置來讓user使用
+並且會存在到程式結束為止。
 
-Q2:malloc可以人為獲取記憶體空間
-且這段空間會存在到使用free函數後才釋放
-或者是整個程式執行完畢時會自動回收
+使用上必須在呼叫時給定資料型別以及大小，
+若是持續malloc而沒有free掉不使用的記憶體時可能會發生memory leakage。
 
-Q3:在使用malloc時若是沒有搭配free使用
-或者是不斷malloc獲得新的記憶體空間時
-可能會將記憶體內的heap區用光
-導致記憶體洩漏 memory lekage
+Got a valid pointer
 
-Q4:Got a valid pointer
 
 // 第三題
 #include "stdio.h"
@@ -69,8 +65,9 @@ int main(void) {
 	return 0;
 
 }
-Q1: 程式正常結束，指標a被自動回收
-Q2: 未定義行為，指標a的記憶體空間已被釋放
+Q1: a指向一個int大小的記憶體位址
+Q2: 為定義行為
+
 
 // 第四題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -82,7 +79,6 @@ int main(void) {
     printf("*(p - 1) = %d\n", *(p - 1));
     return 0;
 }
-*p = 1
 Q1: 0
 Q2: 5
 
@@ -98,10 +94,9 @@ int main(void){
     int d = *++a + *++b;
     printf("%d %d\n", c, d);
 }
-*a = 1
-*b = 11
-c = 1 + 11, a = 2, b = 12
-d = 3 + 13, a = 3, b = 13
+a = 1, b = 11
+c = 1 + 11 = 12, a = 2, b = 22
+d = 3 + 55 = 58, a = 3, b = 55
 
 // 第六題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -115,8 +110,8 @@ int main(void){
     }
     printf("cnt = %d\n", cnt);
     return 0;
-}
-8
+}   
+7
 
 // 第七題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -143,7 +138,7 @@ int main(void){
     }
     return 0;
 }
-problem A
+B
 
 // 第八題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -166,8 +161,7 @@ int main(void){
 
     return 0;
 }
-14
-59
+14, 59
 
 // 第九題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -232,16 +226,28 @@ int bin_search(int *arr, int target){
 
     return -1;
 }
+m = 5, l = 5, r = 10
+m = 7, l = 7, r = 10
+m = 8, l = 8, r = 10
+m = 9
+
+m = 5, l = 5, r = 10
+m = 7, l = 5, r = 7
+m = 6
+
+m = 5, l = 0, r = 5
+m = 2, l = 2, r = 5
+m = 3
+
+m = 5, l = 0, r = 5
+m = 2, l = 0, r = 2
+m = 1
+
 int main(void){
 
 
     return 0;
 }
-0~10 mid=5
-5~10 mid=7
-7~10 mid=8
-8~10 mid=9
-9~10 mid=9
 
 // 第十二題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -258,8 +264,7 @@ int main(void){
     return 0;
 }
 1
-0
-2
+x = 1
 3
 
 // 第十三題, 下面程式碼會印出甚麼
@@ -272,7 +277,7 @@ int main(void){
 
     return 0;
 }
-100 102
+102
 
 // 第十四題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -285,8 +290,8 @@ int main(void){
 
     return 0;
 }
-101000000
-
+00000000 00000000 00000001 01000000
+64
 
 // 第十五題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -312,13 +317,11 @@ int main(void){
 
     return 0;
 }
-c=0,a=12,b=19(y=19),c=31 -> x=31
+c = 0, a = 12, b = 19 (y = 19), c = 31 --> x = 31, y = 19, z = 0
+c = 31, a = 50, b = 69 (y = 69), c = 119 --> x = 31, y = 69, z = 119
 x = 31, y = 19
-
-c=31,a=50,b=69(y=69),c=150 -> z=150
-x = 31, y = 69, z = 150
-
-x + y + z = 250
+x = 31, y = 69, z = 119
+x + y + z = 219
 
 // 第十六題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -348,8 +351,14 @@ int main(void){
 
     return 0;
 }
+a = 0, b = 0, fa = 0 --> a = 1, b = 1
+a = 1, b = 1, fa = 0 --> a = 2, b = 2
+a = 2, b = 2, fa = 0 --> a = 3, b = 3
 a = 3, b = 3
 a = 3, b = 0
+
+
+
 
 // 第十七題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -366,7 +375,14 @@ int main(void){
 
     return 0;
 }
-MORE 16
+THRB = 01000
+
+ch =   11010
+0xf =  01111
+
+ch & 0xf = 01010 = 10
+
+MORE, 16
 
 // 第十八題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -381,7 +397,9 @@ int main(void){
     printf("%d %d %d %d\n", a, b, c, d);
     printf("%d\n", a * b * c * d);
 }
-a = 4, b = 4, c = 5, d = 5
+a = 5, b = 4, c = 5, d = 5
+500
+
 
 // 第十九題, 下面程式碼會印出甚麼
 #include "stdio.h"
@@ -402,7 +420,7 @@ int main(void) {
     foo(); 
     foo(); 
 }
-
+12345678
 
 
 // 第二十題, 下面程式碼會印出甚麼
@@ -419,3 +437,4 @@ int main(void){
 
     return 0;
 }
+a = c > b
